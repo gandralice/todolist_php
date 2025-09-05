@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<?php
+require_once('database/conn.php');
+$task = [];
+$sql = $pdo->query("SELECT * FROM task");
+if($sql->rowCount() > 0){
+  $task = $sql->fetchAll(PDO::FETCH_ASSOC);
+}
+?><!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,19 +20,27 @@
 <body>
   <div id="to-do">
     <h1>Things to-do</h1>
-    <form action="" class="to-do-form">
+    <form action="actions/create.php" method="POST" class="to-do-form">
       <input type="text" name="description" placeholder="Write your task here" required>
       <button type="submit" class="form-btn">
         <i class="fa-solid fa-plus"></i>
       </button>
     </form>
     <div id="tasks">
+      <?php foreach($task as $t): ?>
       <div class="task">
-        <input type="checkbox" name="progress" class="progress">
-        <p class="task-description">tp java</p>
+        <input
+          type="checkbox"
+          name="progress"
+          class="progress"
+          <?= $t['completed'] ? 'checked' : '' ?>
+        >
+        <p class="task-description">
+          <?= $t['description'] ?>
+        </p>
         <div class="task-actions">
           <a class="action-btn edit-btn"><i class="fa-solid fa-pencil"></i></i></a>
-          <a class="action-btn delete-btn"><i class="fa-solid fa-trash-can"></i></a>
+          <a href="actions/delete.php?id=<?= $t['id'] ?>" class="action-btn delete-btn"><i class="fa-solid fa-trash-can"></i></a>
         </div>
         <form action="" class="to-do-form edit-task hidden">
           <input type="text" name="description" placeholder="Edit your task here">
@@ -34,6 +49,7 @@
           </button>
         </form>
       </div>
+      <?php endforeach ?>  
     </div>
   </div>
   <script src="src/js/script.js"></script>
