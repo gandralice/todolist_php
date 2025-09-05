@@ -1,7 +1,7 @@
 <?php
 require_once('database/conn.php');
 $task = [];
-$sql = $pdo->query("SELECT * FROM task");
+$sql = $pdo->query("SELECT * FROM task ORDER BY id DESC");
 if($sql->rowCount() > 0){
   $task = $sql->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -42,12 +42,20 @@ if($sql->rowCount() > 0){
           <a class="action-btn edit-btn"><i class="fa-solid fa-pencil"></i></i></a>
           <a href="actions/delete.php?id=<?= $t['id'] ?>" class="action-btn delete-btn"><i class="fa-solid fa-trash-can"></i></a>
         </div>
-        <form action="" class="to-do-form edit-task hidden">
-          <input type="text" name="description" placeholder="Edit your task here">
+
+        <form action="actions/update.php" method="POST" class="to-do-form edit-task hidden">
+          <input type="text" class="hidden" name="id" value="<?= $t['id'] ?>">
+          <input
+            type="text"
+            name="description"
+            placeholder="Edit your task here"
+            value="<?= $t['description'] ?>"
+          >
           <button type="submit" class="form-btn confirm-btn">
             <i class="fa-solid fa-check"></i>
           </button>
         </form>
+
       </div>
       <?php endforeach ?>  
     </div>
