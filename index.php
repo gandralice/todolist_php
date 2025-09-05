@@ -32,7 +32,8 @@ if($sql->rowCount() > 0){
         <input
           type="checkbox"
           name="progress"
-          class="progress"
+          class="progress <?= $t['completed'] ? 'done' : '' ?>"
+          data-task-id="<?= $t['id'] ?>" 
           <?= $t['completed'] ? 'checked' : '' ?>
         >
         <p class="task-description">
